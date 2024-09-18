@@ -1,0 +1,48 @@
+<!-- Sample Ant build file for Bounce -->
+<project name="bounce" default="compile">
+
+   <!-- CHANGE THIS FOR YOUR SYSTEM property to allow ant to find javafx-->
+   <property name="javafx" location="/usr/share/openjfx/lib"/>
+
+   <!-- standard compile task, but turn debugging on for source viewing -->
+   <target name="compile" description="compile the source">
+      <javac srcdir="." excludes="nofxml/*.java" includeantruntime="false" debug="true">
+        <compilerarg line="--module-path ${javafx}"/>
+        <compilerarg line="--add-modules javafx.controls,javafx.fxml"/>
+      </javac>
+   </target>
+
+   <!-- standard run task, do "ant run" for this task -->
+   <target name="run" description="run Bounce" depends="compile">
+      <echo message="Run a bouncer"/>
+      <java classname="Bounce" fork="true">
+        <jvmarg line="--module-path ${javafx}"/>
+        <jvmarg line="--add-modules javafx.controls,javafx.fxml"/>
+      </java>
+   </target>
+
+   <!-- standard run task, do "ant run" for this task -->
+   <target name="jar" description="create bounce.jar" depends="compile">
+      <echo message="Create bouncer.jar"/>
+      <jar destfile="bounce.jar" manifest="manifest.txt" basedir="." includes="*.class,bounce.fxml" />
+   </target>
+
+   <!-- run this program from its jarfile -->
+   <target name="runjar" description="run Bounce jarfile" depends="jar">
+      <echo message="Run bounce.jar"/>
+      <java jar="bounce.jar" fork="true">
+        <jvmarg line="--module-path ${javafx}"/>
+        <jvmarg line="--add-modules javafx.controls,javafx.fxml"/>
+      </java>
+   </target>
+
+   <!-- clean up by removing all generated files; do "ant clean" to start afresh -->
+   <target name="clean">
+      <delete>
+         <fileset dir="." includes="*.class"/>
+         <fileset dir="." includes="bounce.jar"/>
+      </delete>
+   </target>
+
+</project>
+

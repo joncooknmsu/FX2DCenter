@@ -1,0 +1,3 @@
+Main-Class: Bounce
+Module-Path-doesntwork: /usr/share/openjfx/lib
+Modules-doesntwork: javafx.controls,javafx.fxml

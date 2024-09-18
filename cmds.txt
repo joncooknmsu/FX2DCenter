@@ -1,0 +1,4 @@
+javac --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml Bounce.java
+java --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml Bounce
+jar cfm hello.jar manifest.txt *.class bounce.fxml
+java --module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml -jar bounce.jar
