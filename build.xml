@@ -1,5 +1,5 @@
-<!-- Sample Ant build file for Bounce -->
-<project name="bounce" default="compile">
+<!-- Sample Ant build file for CenteredPlayer -->
+<project name="centeredplayer" default="compile">
 
    <!-- CHANGE THIS FOR YOUR SYSTEM property to allow ant to find javafx-->
    <property name="javafx" location="/usr/share/openjfx/lib"/>
@@ -13,24 +13,24 @@
    </target>
 
    <!-- standard run task, do "ant run" for this task -->
-   <target name="run" description="run Bounce" depends="compile">
-      <echo message="Run a bouncer"/>
-      <java classname="Bounce" fork="true">
+   <target name="run" description="run CenteredPlayer" depends="compile">
+      <echo message="Run a CenteredPlayer"/>
+      <java classname="CenteredPlayer" fork="true">
         <jvmarg line="--module-path ${javafx}"/>
         <jvmarg line="--add-modules javafx.controls,javafx.fxml"/>
       </java>
    </target>
 
    <!-- standard run task, do "ant run" for this task -->
-   <target name="jar" description="create bounce.jar" depends="compile">
-      <echo message="Create bouncer.jar"/>
-      <jar destfile="bounce.jar" manifest="manifest.txt" basedir="." includes="*.class,bounce.fxml" />
+   <target name="jar" description="create centered.jar" depends="compile">
+      <echo message="Create centered.jar"/>
+      <jar destfile="centered.jar" manifest="manifest.txt" basedir="." includes="*.class,centeredplayer.fxml" />
    </target>
 
    <!-- run this program from its jarfile -->
-   <target name="runjar" description="run Bounce jarfile" depends="jar">
-      <echo message="Run bounce.jar"/>
-      <java jar="bounce.jar" fork="true">
+   <target name="runjar" description="run CenteredPlayer jarfile" depends="jar">
+      <echo message="Run centered.jar"/>
+      <java jar="centered.jar" fork="true">
         <jvmarg line="--module-path ${javafx}"/>
         <jvmarg line="--add-modules javafx.controls,javafx.fxml"/>
       </java>
@@ -40,7 +40,7 @@
    <target name="clean">
       <delete>
          <fileset dir="." includes="*.class"/>
-         <fileset dir="." includes="bounce.jar"/>
+         <fileset dir="." includes="centered.jar"/>
       </delete>
    </target>
 

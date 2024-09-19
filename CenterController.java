@@ -1,5 +1,5 @@
 //
-// Controller for Bounce app
+// Controller for CenteredPlayer app
 //
 
 import javafx.scene.layout.Pane;
@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-public class BounceController extends AnimationTimer
+public class CenterController extends AnimationTimer
 {
 
 @FXML private Slider speedSlider;
@@ -30,10 +30,10 @@ private ArrayList<FlyingBox> boxes;
 
 // Constructor cannot really do much since the FXML elements are not
 // yet initialized (try printing them; they're null)
-public BounceController()
+public CenterController()
 {
-    // System.out.println("BCC: FXApp:"+Bounce.app+ " scene:"+
-    // Bounce.app.scene+ " pane:"+Bounce.app.pane);
+    // System.out.println("BCC: FXApp:"+CenteredPlayer.app+ " scene:"+
+    // CenteredPlayer.app.scene+ " pane:"+CenteredPlayer.app.pane);
     // System.out.println("BCC: slider:"+speedSlider+ " gpane:"+gamePane+ "
     // circle:"+redBall);
 }
@@ -78,9 +78,9 @@ public void initialize()
     Rectangle clip = new Rectangle(800, 400);
     clip.setLayoutX(0); clip.setLayoutY(0);
     gamePane.setClip(clip);
-    // System.out.println("BCI: FXApp:" + Bounce.app + " scene:" + Bounce.app.scene
+    // System.out.println("BCI: FXApp:" + CenteredPlayer.app + " scene:" + CenteredPlayer.app.scene
     // +
-    // " pane:" + Bounce.app.pane);
+    // " pane:" + CenteredPlayer.app.pane);
     // System.out.println("BCI: slider:"+speedSlider+ " gpane:"+gamePane+ "
     // circle:"+redBall);
     //

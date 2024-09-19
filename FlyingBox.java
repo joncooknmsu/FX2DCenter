@@ -1,3 +1,7 @@
+//
+// FlyingBox: each object represents an animated "flying" rectangle in
+// the "game"
+//
 
 //import javafx.event.Event;
 import javafx.scene.shape.Rectangle;
