@@ -1,5 +1,13 @@
 //
 // Controller for CenteredPlayer app
+// - this app uses arrow keys to "move" a player (the red ball) around
+//   a game area (grey area), but the player stays in the center of 
+//   the window, and the game area moves around the player, instead of
+//   the player moving.
+// - TODO: once the player is near enough to a border or corner, the game
+//   area should really remain in place and then the player should move 
+//   in the window until they are at the border; so both game area and 
+//   player movement are needed for a real game.
 //
 
 import javafx.scene.layout.Pane;
@@ -44,8 +52,13 @@ public boolean goNorth, goSouth, goWest, goEast, running;
 @FXML
 public void initialize()
 {
-   Platform.runLater(() -> windowPane.requestFocus()); // windowPane.requestFocus();
+   // by default the slider has the focus (not sure why), so we request it
+   // back to the main window here. Must be in a runLater() context!
+   Platform.runLater(() -> windowPane.requestFocus()); 
    // https://stackoverflow.com/questions/29962395/how-to-write-a-keylistener-for-javafx
+   // Now create callback handlers for the keypress and keyrelease events for
+   // the arrow keys; I don't care for anonymous classes used this way but I
+   // need to think about an alternative design; for now, it works.
    windowPane.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -75,13 +88,17 @@ public void initialize()
 
     // clipping: https://stackoverflow.com/questions/15920680/how-to-restrict-visibility-of-items
     // https://blog.e-zest.com/sliding-in-javafx-its-all-about-clipping/
+    // This clipping seems to possibly not be working yet. Sometimes the grey
+    // game area is drawn over the menu bar; I haven't figured it out yet...
+    // - note: it is doing something, but 
     Rectangle clip = new Rectangle(800, 400);
     clip.setLayoutX(0); clip.setLayoutY(0);
     gamePane.setClip(clip);
-    // System.out.println("BCI: FXApp:" + CenteredPlayer.app + " scene:" + CenteredPlayer.app.scene
+
+    // System.out.println("CPI: FXApp:" + CenteredPlayer.app + " scene:" + CenteredPlayer.app.scene
     // +
     // " pane:" + CenteredPlayer.app.pane);
-    // System.out.println("BCI: slider:"+speedSlider+ " gpane:"+gamePane+ "
+    // System.out.println("CPI: slider:"+speedSlider+ " gpane:"+gamePane+ "
     // circle:"+redBall);
     //
     // I have the red ball circle in my FXML but for some reason it is not
@@ -89,17 +106,21 @@ public void initialize()
     // is because it is nested in my gamePane, and maybe I need to do something
     // different in my FXML to get it to auto-resolve.
     redBall = (Circle) gamePane.lookup("#redBall");
-    // make the boxes
+    // make the flying boxes
     makeBoxes();
-        redBall.setCenterX(600); redBall.setCenterY(300);
-        Rectangle r = new Rectangle(1200, 600, Color.color(0.5, 0.5, 0.5, 0.25));
-        gamePane.getChildren().add(r);
-        Platform.runLater(() -> {
-            r.setLayoutX(0);
-            r.setLayoutY(0);
-            //r.setWidth(780);
-            //r.setHeight(380);
-        });
+    // position ball (player) in center of screen
+    redBall.setCenterX(600); redBall.setCenterY(300);
+    Rectangle r = new Rectangle(1200, 600, Color.color(0.5, 0.5, 0.5, 0.25));
+    gamePane.getChildren().add(r);
+    // I am not sure I should even be doing the stuff below; layoutX/Y cause
+    // and offset to the object, and I would rather refer to the absolute
+    // positions of my game objects, so I keep the layoutX/Y at 0
+    Platform.runLater(() -> {
+        r.setLayoutX(0);
+        r.setLayoutY(0);
+        //r.setWidth(780);
+        //r.setHeight(380);
+    });
     // The start line below is for the AnimationTimer part of this class;
     // we just let it run for the duration of the application
     this.start();
@@ -122,7 +143,7 @@ public void makeBoxes()
 private long moveRate = 10000000; // animation timer is in nanoseconds!
 private long prevTime = 0;
 // animation data for red ball
-private int direction = 2;
+private int direction = 0;
 private int dirRate = 2;
 private int posAdjustX, posAdjustY;
 private boolean timerBasedMovement = false;
@@ -147,10 +168,12 @@ public void handle(long now)
     long elapsed = now - prevTime;
     if (elapsed < moveRate) // don't do anything, just wait for more time
         return;
+    // take out of elapsed time as many moveRates as possible
     int numRates = (int) (elapsed / moveRate); // integer division
     prevTime += moveRate * numRates;
     if (timerBasedMovement) {
-       // take out of elapsed time as many moveRates as possible
+       // this is left over from the bounce example, and is not used in this
+       // demo; I just want to keep it in, in case it comes in handy
        if (redBall.getCenterX() + redBall.getRadius() > gamePane.getWidth())
            direction = -dirRate;
        else if (redBall.getCenterX() - redBall.getRadius() < 0)
@@ -159,15 +182,15 @@ public void handle(long now)
        posAdjustY = 0;
     } else {
        // keyboard based movement
-       if (goSouth) posAdjustY = 1;
-       else if (goNorth) posAdjustY = -1;
+       if (goSouth) posAdjustY = dirRate;
+       else if (goNorth) posAdjustY = -dirRate;
        else posAdjustY = 0;
        if (posAdjustY > 0 && redBall.getCenterY() + redBall.getRadius() > gamePane.getHeight())
            posAdjustY = 0;
        else if (posAdjustY < 0 && redBall.getCenterY() - redBall.getRadius() < 0)
            posAdjustY = 0;
-       if (goWest) posAdjustX = -1;
-       else if (goEast) posAdjustX = 1;
+       if (goWest) posAdjustX = -dirRate;
+       else if (goEast) posAdjustX = dirRate;
        else posAdjustX = 0;
        if (posAdjustX > 0 && redBall.getCenterX() + redBall.getRadius() > gamePane.getWidth())
            posAdjustX = 0;
@@ -191,6 +214,7 @@ public void handle(long now)
 }
 
 // This is our handler for when the slider is moved
+// NOT USED right now
 @FXML
 public void speedChanged(Event e)
 {

@@ -1,0 +1,11 @@
+{
+    "java.format.settings.url": "eclipse-formatter.xml",
+    "java.format.settings.profile": "Eclipse",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/usr/share/openjfx/lib/javafx.base.jar",
+        "/usr/share/openjfx/lib/javafx.controls.jar",
+        "/usr/share/openjfx/lib/javafx.fxml.jar",
+        "/usr/share/openjfx/lib/javafx.graphics.jar"
+    ]
+}

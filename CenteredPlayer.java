@@ -1,6 +1,7 @@
 //
 // CenteredPlayer main app class
-// - shows Loading and starting an FXML-based JavaFX program 
+// - shows Loading and starting an FXML-based JavaFX program
+// - most of the application's functionality is in CenterController
 //
 
 import javafx.application.Application;
