@@ -8,7 +8,7 @@
 
 <BorderPane fx:id="windowPane" maxHeight="700" maxWidth="900" minHeight="100" minWidth="100" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CenterController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER" style="-fx-background-color: white; -fx-opacity: 1.0">
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER" style="-fx-background-color: white; -fx-opacity: 1.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -35,6 +35,6 @@
          </children></Pane>
    </center>
    <bottom>
-      <!--<Slider fx:id="speedSlider" onMouseReleased="#speedChanged" BorderPane.alignment="CENTER" /> --><TextField fx:id="textField" editable="false" alignment="CENTER" BorderPane.alignment="CENTER" />
+      <!--<Slider fx:id="speedSlider" onMouseReleased="#speedChanged" BorderPane.alignment="CENTER" /> --><TextField fx:id="textField" editable="false" alignment="CENTER" BorderPane.alignment="CENTER" text="Use the arrow keys to move around the grey game area!"/>
    </bottom> <!-- onKeyReleased="#speedChanged"  -->
 </BorderPane>

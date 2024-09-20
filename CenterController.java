@@ -15,6 +15,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.Slider;
+import javafx.scene.control.MenuBar;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import javafx.scene.input.KeyEvent;
 public class CenterController extends AnimationTimer
 {
 
+@FXML private MenuBar menuBar;
 @FXML private Slider speedSlider;
 @FXML private Circle redBall;
 @FXML private Pane gamePane;
@@ -55,6 +57,8 @@ public void initialize()
    // by default the slider has the focus (not sure why), so we request it
    // back to the main window here. Must be in a runLater() context!
    Platform.runLater(() -> windowPane.requestFocus()); 
+   menuBar.setOpacity(1.0);
+   menuBar.setViewOrder(-1.0); // finally, my game area does not draw over this!
    // https://stackoverflow.com/questions/29962395/how-to-write-a-keylistener-for-javafx
    // Now create callback handlers for the keypress and keyrelease events for
    // the arrow keys; I don't care for anonymous classes used this way but I
@@ -94,7 +98,6 @@ public void initialize()
     Rectangle clip = new Rectangle(800, 400);
     clip.setLayoutX(0); clip.setLayoutY(0);
     gamePane.setClip(clip);
-
     // System.out.println("CPI: FXApp:" + CenteredPlayer.app + " scene:" + CenteredPlayer.app.scene
     // +
     // " pane:" + CenteredPlayer.app.pane);
@@ -121,6 +124,10 @@ public void initialize()
         //r.setWidth(780);
         //r.setHeight(380);
     });
+    System.out.println("LO: " + gamePane.getLayoutX() + "," + gamePane.getLayoutY());
+    System.out.println("BLO: " + gamePane.getLayoutBounds());
+    System.out.println("BIL: " + gamePane.getBoundsInLocal());
+    System.out.println("BIP: " + gamePane.getBoundsInParent());
     // The start line below is for the AnimationTimer part of this class;
     // we just let it run for the duration of the application
     this.start();
@@ -147,6 +154,7 @@ private int direction = 0;
 private int dirRate = 2;
 private int posAdjustX, posAdjustY;
 private boolean timerBasedMovement = false;
+private double loY = 0;
 
 // This handle() method is where the timer is used, this is called every
 // time JavaFX thinks we should update the animation -- i.e., the view on
@@ -159,6 +167,15 @@ public void handle(long now)
         // just set starting time on first call and skip animation
         prevTime = now;
         return;
+    }
+    if (loY != gamePane.getLayoutY()) {
+       loY = gamePane.getLayoutY();
+       System.out.println("LO: " + gamePane.getLayoutX() + "," + gamePane.getLayoutY());
+       System.out.println("BLO: " + gamePane.getLayoutBounds());
+       System.out.println("BIL: " + gamePane.getBoundsInLocal());
+       System.out.println("BIP: " + gamePane.getBoundsInParent());
+       System.out.println("MBR: " + menuBar.getHeight());
+       System.out.println("----------------------------------------------");
     }
     //System.out.println("pane width: " + gamePane.getWidth());
     Rectangle clip = (Rectangle) gamePane.getClip();
