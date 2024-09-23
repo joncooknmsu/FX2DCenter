@@ -113,17 +113,26 @@ public void initialize()
     makeBoxes();
     // position ball (player) in center of screen
     redBall.setCenterX(600); redBall.setCenterY(300);
-    Rectangle r = new Rectangle(1200, 600, Color.color(0.5, 0.5, 0.5, 0.25));
-    gamePane.getChildren().add(r);
-    // I am not sure I should even be doing the stuff below; layoutX/Y cause
-    // and offset to the object, and I would rather refer to the absolute
-    // positions of my game objects, so I keep the layoutX/Y at 0
-    Platform.runLater(() -> {
-        r.setLayoutX(0);
-        r.setLayoutY(0);
-        //r.setWidth(780);
-        //r.setHeight(380);
-    });
+    // create the background -- checker board of greyish rectangles
+    double grayLevel = 0.5;
+    for (int x=0; x < 1200; x+=200) {
+       for (int y=0; y < 600; y+=200) {
+          Rectangle r = new Rectangle(200, 200, Color.color(grayLevel, 
+                                          grayLevel, grayLevel, 0.25));
+          gamePane.getChildren().add(r);
+          // not sure if I should use layoutX/Y or just X/Y. This works
+          // but I need to read more about it. the For background I think it
+          // is OK
+          final int lx = x; final int ly = y; // needed for runLater()
+          Platform.runLater(() -> {
+              r.setLayoutX(lx);  r.setLayoutY(ly);
+          });
+          if (grayLevel > 0.45)  // flip grayness back and forth
+             grayLevel = 0.25;
+          else
+             grayLevel = 0.5;
+       }
+    }
     System.out.println("LO: " + gamePane.getLayoutX() + "," + gamePane.getLayoutY());
     System.out.println("BLO: " + gamePane.getLayoutBounds());
     System.out.println("BIL: " + gamePane.getBoundsInLocal());
