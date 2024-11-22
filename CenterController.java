@@ -37,6 +37,7 @@ public class CenterController extends AnimationTimer
 @FXML private Pane gamePane;
 @FXML private Pane windowPane;
 private ArrayList<FlyingBox> boxes;
+private ArrayList<FlyingSprite> sprites;
 
 // Constructor cannot really do much since the FXML elements are not
 // yet initialized (try printing them; they're null)
@@ -153,6 +154,10 @@ public void makeBoxes()
                 randInts.next() % 40 + 2, randInts.next() % 40 + 2, randInts.next()));
     }
     gamePane.getChildren().addAll(boxes);
+    sprites = new ArrayList<FlyingSprite>();
+    sprites.add(new FlyingSprite(gamePane, 50, 50, 40, 40, "/myAvatar.png"));
+    sprites.add(new FlyingSprite(gamePane, 150, 150, 50, 50, "/bunnysheet5.png", 12, 216, 38, 38, 8));
+    gamePane.getChildren().addAll(sprites);
 }
 
 // Animation data for timer
@@ -235,6 +240,9 @@ public void handle(long now)
     // tell the bouncing rectangles to update their own positions
     for (FlyingBox box : boxes) {
         box.move();
+    }
+    for (FlyingSprite sprite : sprites) {
+        sprite.move();
     }
     return;
 }
